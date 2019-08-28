@@ -1,0 +1,61 @@
+---
+# --------------------------------
+
+- name: 'install Python2 core packages'
+  apt:
+    pkg: ['python-apt', 'python-pip', 'virtualenv']
+    state: present
+  when: ct_family == 'debian'
+  become: true
+  tags:
+  - python
+  - python-pkg
+  - x-pkg
+
+- name: 'install Python3 core packages'
+  apt:
+    pkg: ['python3', 'python3-boto3', 'python3-pip', 'python3-venv']
+    state: present
+  when: ct_family == 'debian'
+  become: true
+  tags:
+  - python
+  - python-pkg
+  - x-pkg
+
+- name: 'install Python tool packages'
+  apt:
+    pkg: ['flake8', 'pylint', 'pylint3']
+    state: present
+  when: ct_family == 'debian'
+  become: true
+  tags:
+  - python
+  - python-pkg
+  - x-pkg
+
+- name: 'transfer bash include file for Python'
+  copy:
+    src: py.sh
+    dest: /usr/local/etc/bash.d/
+    mode: 0644
+  become: true
+  tags:
+  - python
+  - python-bash
+
+- name: 'copy ViM plugin over'
+  copy:
+    src: '{{item.src}}'
+    dest: '{{item.dest}}'
+    mode: 0444
+  loop:
+  - {src: python.vim, dest: ~/.vim/ftplugin/python.vim}
+  loop_control:
+    label: '{{item.src}}'
+  tags:
+  - python
+  - python-vim
+
+# --------------------------------
+...
