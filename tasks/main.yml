@@ -8,9 +8,8 @@
   when: ct_family == 'debian'
   become: true
   tags:
-  - python
-  - python-pkg
-  - x-pkg
+  - ct-python
+  - ct-python-pkg
 
 - name: 'install Python3 core packages'
   apt:
@@ -19,9 +18,8 @@
   when: ct_family == 'debian'
   become: true
   tags:
-  - python
-  - python-pkg
-  - x-pkg
+  - ct-python
+  - ct-python-pkg
 
 - name: 'install Python tool packages'
   apt:
@@ -30,9 +28,8 @@
   when: ct_family == 'debian'
   become: true
   tags:
-  - python
-  - python-pkg
-  - x-pkg
+  - ct-python
+  - ct-python-pkg
 
 - name: 'transfer bash include file for Python'
   copy:
@@ -41,8 +38,8 @@
     mode: 0644
   become: true
   tags:
-  - python
-  - python-bash
+  - ct-python
+  - ct-python-bash
 
 - name: 'copy ViM plugin over'
   copy:
@@ -54,8 +51,8 @@
   loop_control:
     label: '{{item.src}}'
   tags:
-  - python
-  - python-vim
+  - ct-python
+  - ct-python-vim
 
 # --------------------------------
 ...
