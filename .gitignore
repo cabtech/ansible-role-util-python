@@ -1,3 +1,4 @@
 # ansible-role-util-python
 .ansible/
 src/
+.lint*
