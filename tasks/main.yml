@@ -45,7 +45,7 @@
   ansible.builtin.copy:
     src: py.sh
     dest: /usr/local/etc/bash.d/
-    mode: 0644
+    mode: '0644'
   become: true
   tags: ct-python
 
@@ -53,7 +53,7 @@
   ansible.builtin.copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-    mode: 0444
+    mode: '0444'
   loop:
   - {src: python.vim, dest: ~/.vim/ftplugin/python.vim}
   loop_control:
