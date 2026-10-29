@@ -1,6 +1,23 @@
 ---
 # --------------------------------
 
+- name: "Include variables wrapper"
+  ansible.builtin.include_tasks:
+    file: variables.yml
+  tags: ["ct-python"]
+
+- name: "Disto/Family tasks (FF)"
+  ansible.builtin.include_tasks:
+    file: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+      - "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'].split('.')[0] }}.yml"
+      - "{{ ansible_facts['distribution'] }}.yml"
+      - "{{ ansible_facts['os_family'] }}.yml"
+      - "default.yml"
+  tags: ["ct-python"]
+
 - name: 'Install Python2 core packages'
   ansible.builtin.apt:
     pkg: ['python-apt', 'python-pip', 'virtualenv']
@@ -9,7 +26,7 @@
   - ansible_facts['os_family'] == 'Debian'
   - python_version_2
   become: true
-  tags: ct-python
+  tags: ["ct-python"]
 
 - name: 'Install Python2 tool packages'
   ansible.builtin.apt:
@@ -19,7 +36,7 @@
   - ansible_facts['os_family'] == 'Debian'
   - python_version_2
   become: true
-  tags: ct-python
+  tags: ["ct-python"]
 
 - name: 'Install Python3 core packages'
   ansible.builtin.apt:
@@ -29,7 +46,7 @@
   - ansible_facts['os_family'] == 'Debian'
   - python_version_3
   become: true
-  tags: ct-python
+  tags: ["ct-python"]
 
 - name: 'Install Python3 tool packages'
   ansible.builtin.apt:
@@ -39,7 +56,7 @@
   - ansible_facts['os_family'] == 'Debian'
   - python_version_3
   become: true
-  tags: ct-python
+  tags: ["ct-python"]
 
 - name: 'Transfer bash include file for Python'
   ansible.builtin.copy:
@@ -47,7 +64,7 @@
     dest: /usr/local/etc/bash.d/
     mode: '0644'
   become: true
-  tags: ct-python
+  tags: ["ct-python"]
 
 - name: 'Copy ViM plugin over'
   ansible.builtin.copy:
@@ -58,7 +75,7 @@
   - {src: python.vim, dest: ~/.vim/ftplugin/python.vim}
   loop_control:
     label: '{{ item.src }}'
-  tags: ct-python
+  tags: ["ct-python"]
 
 # --------------------------------
 ...
